@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  core:
+    volumes:
+      - ../core:/app/core
+      - /app/core/node_modules
+      - /app/core/dist
+    environment:
+      NODE_ENV: development

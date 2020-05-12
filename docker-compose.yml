@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  core:
+    build: ./core
+    container_name: argon.core
+    image: vikei/argon.core
+    restart: always
+    volumes:
+      - argon.vlm.logs:/app/logs
+    ports:
+      - "80:80"
+    environment:
+      PG_URL: postgres://${PG_USER:-user}:${PG_PASSWORD:-password}@postgres/${PG_DB_NAME:-argon}
+      NODE_ENV: ${NODE_ENV:-production}
+      JWT_KEY: ${JWT_KEY:-very-secret}
+      PORT: 3100
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:11.2
+    restart: always
+    container_name: argon.postgres
+    volumes:
+      - argon.vlm.postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME:-argon}
+      POSTGRES_USER: ${PG_USER:-user}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-password}
+
+volumes:
+  argon.vlm.logs:
+  argon.vlm.postgres:
