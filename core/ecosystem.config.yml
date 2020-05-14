@@ -1,0 +1,5 @@
+apps:
+    - script   : ./core/dist/main.js
+      name     : core
+      instances: max
+      exec_mode: cluster

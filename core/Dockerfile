@@ -7,7 +7,8 @@ WORKDIR $root_dir
 
 RUN apt-get update && apt-get upgrade -y && \
   apt-get install -y nginx && \
-  apt autoremove -y
+  apt autoremove -y && \
+  yarn global add pm2
 
 COPY nginx.conf /etc/nginx/sites-available/core.conf
 RUN ln /etc/nginx/sites-available/core.conf /etc/nginx/sites-enabled/core.conf
@@ -21,6 +22,8 @@ COPY ./code/package.json .
 RUN yarn
 COPY ./code .
 RUN yarn build
+
+COPY ./ecosystem.config.yml $root_dir
 
 WORKDIR $root_dir
 COPY entrypoint.sh .
